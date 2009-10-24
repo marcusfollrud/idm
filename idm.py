@@ -85,10 +85,23 @@ else:
   print 'Error: Could not find a module by that name.'
   sys.exit(0)
 
-getid = int(raw_input("Which module do you want to download? ")) 
+getids = raw_input("Which module do you want to download? (Separate with comma for more than one)")
+
+id_array = getids.split(",")
+
+for x in id_array:
+  print "Downloading: "+l[int(x)]
+  lf = open(l[int(x)],'wb')
+  ftp.retrbinary('RETR ' + l[int(x)],lf.write)
+  lf.close
+  
+ftp.close()
+print "Download complete. Cloing..."
+"""
 print 'Ok, lets get ' + l[getid]
 lf = open(l[getid],'wb') 
 ftp.retrbinary('RETR ' + l[getid],lf.write)
 lf.close()
 
 ftp.close()
+"""
