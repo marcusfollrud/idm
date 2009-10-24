@@ -96,12 +96,4 @@ for x in id_array:
   lf.close
   
 ftp.close()
-print "Download complete. Cloing..."
-"""
-print 'Ok, lets get ' + l[getid]
-lf = open(l[getid],'wb') 
-ftp.retrbinary('RETR ' + l[getid],lf.write)
-lf.close()
-
-ftp.close()
-"""
+print "Download complete. Cloing…"
