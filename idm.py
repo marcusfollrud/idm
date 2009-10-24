@@ -15,18 +15,23 @@ from ftplib import FTP
 
 optParser = OptionParser()
 optParser.set_defaults(drupalfilter="all")
+optParser.set_defaults(verbose=True)
 optParser.add_option("-f","--filter", action="store", type="string", dest="drupalfilter",
 					help="Filter the results in version numbers.", metavar="version")
 
 optParser.add_option("-d", "--dev", action="store_true", dest="devpackages", help="Show developer packages", default=False)
 
+optParser.add_option("-v", "--verbose", action="store_true", dest="verbose", help="Verbose mode", default=False)
+
+optParser.add_option("-q", "--quiet", action="store_false", dest="verbose", help="Turn off output", default=True)
+
 (options, args) = optParser.parse_args()
 
 #drupal filter is in options.drupalfilter
 
-if len(sys.argv) == 1:
-    print 'Syntax: ' + sys.argv[0] + ' modulename'
-    sys.exit(1)
+if len(args) < 1:
+  print "Usage: ./idm.py <commands> [module]"
+  sys.exit(0)
 
 module = args[0]
 server = 'ftp.drupal.org'
@@ -45,14 +50,9 @@ else: pass
 
 ftp.cwd( path )
 fdir = ftp.nlst()
-print 'Found a total of ' + str(len(fdir)) + ' files!'
+if options.verbose:
+  print 'Found a total of ' + str(len(fdir)) + ' files!'
 
-#l = []
-#for f in fdir:
-#  p = re.compile('.*'+module+'*')
-#  if p.match(f):
-#    l.append(f)
-#print l
 
 l = [f for f in fdir if module in f]
 l2 = [] #This is the filtered list.
@@ -73,12 +73,13 @@ for i in range(0, len(l)):
            l2.append(l[i])
 
 if (len(l2) > 0): #We got a result
-  print "Files containing \""+module+"\""
-  print " Based on filter: "+options.drupalfilter
-  if options.devpackages == True:
-    print "  Showing developer packages"
-  else:
-    print "  Not showing developer packages"
+  if options.verbose:
+    print "Files containing \""+module+"\""
+    print " Based on filter: "+options.drupalfilter
+    if options.devpackages == True:
+      print "  Showing developer packages"
+    else:
+      print "  Not showing developer packages"
   for i in range(0,len(l2)):
     print '[' + str(i) + '] '+ l2[i]
 else:
@@ -90,10 +91,12 @@ getids = raw_input("Which module do you want to download? (Separate with comma f
 id_array = getids.split(",")
 
 for x in id_array:
-  print "Downloading: "+l[int(x)]
+  if options.verbose:
+    print "Downloading: "+l[int(x)]
   lf = open(l[int(x)],'wb')
   ftp.retrbinary('RETR ' + l[int(x)],lf.write)
   lf.close
   
 ftp.close()
-print "Download complete. Cloing…"
+if options.verbose:
+  print "Download complete. Cloing…"
