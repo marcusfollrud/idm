@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/env python
+# -*- coding: iso-8859-1 -*-
 #
 # Install Drupal Module (idm)
 # Author : Jonas Björk, jonas@jonasbjork.net
@@ -27,7 +27,7 @@ optParser.add_option("-v", "--verbose", action="store_true", dest="verbose", hel
 
 optParser.add_option("-q", "--quiet", action="store_false", dest="verbose", help="Turn off output", default=True)
 
-optParser.add_option("-x", "--extract", action="store_true", dest="extract", help="Extract files after downloading", default=False)
+#optParser.add_option("-x", "--extract", action="store_true", dest="extract", help="Extract files after downloading", default=False)
 
 (options, args) = optParser.parse_args()
 
@@ -108,6 +108,8 @@ ftp.close()
 if options.verbose:
   print "Download complete."
 
+for x in id_array:
+  os.system("tar xvf "+l2[int(x)])
  
 if options.verbose:
   print "Closing…"
