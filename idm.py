@@ -60,7 +60,8 @@ for i in range(0, len(l)):
   #This is where we write out the files found.
   #Also. This is where we do the filtering. 6.x, 5.x, 4.x and dev (for now..)
   if options.drupalfilter == "all":
-    l2.append(l[i])
+    if string.find(l[i],"-dev",0,len(l[i])) < 0:
+      l2.append(l[i])
   else:
   #Parse after the version entered.
     if string.find(l[i],options.drupalfilter+".x",0,len(l[i])) > 0:
