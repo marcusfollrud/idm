@@ -13,6 +13,8 @@ from optparse import OptionParser #For parsing command line arguments.
 
 from ftplib import FTP
 
+import os
+
 optParser = OptionParser()
 optParser.set_defaults(drupalfilter="all")
 optParser.set_defaults(verbose=True)
@@ -21,9 +23,11 @@ optParser.add_option("-f","--filter", action="store", type="string", dest="drupa
 
 optParser.add_option("-d", "--dev", action="store_true", dest="devpackages", help="Show developer packages", default=False)
 
-optParser.add_option("-v", "--verbose", action="store_true", dest="verbose", help="Verbose mode", default=False)
+optParser.add_option("-v", "--verbose", action="store_true", dest="verbose", help="Verbose mode (Default on)", default=False)
 
 optParser.add_option("-q", "--quiet", action="store_false", dest="verbose", help="Turn off output", default=True)
+
+optParser.add_option("-x", "--extract", action="store_true", dest="extract", help="Extract files after downloading", default=False)
 
 (options, args) = optParser.parse_args()
 
@@ -87,17 +91,24 @@ else:
   print 'Error: Could not find a module by that name.'
   sys.exit(0)
 
-getids = raw_input("Which module do you want to download? (Separate with comma for more than one)")
+getids = raw_input("Which module do you want to download? (Separate with comma for more than one) ")
 
 id_array = getids.split(",")
 
+if options.verbose:
+    print "Downloading:"
 for x in id_array:
   if options.verbose:
-    print "Downloading: "+l[int(x)]
-  lf = open(l[int(x)],'wb')
-  ftp.retrbinary('RETR ' + l[int(x)],lf.write)
+    print "  -->"+l2[int(x)]
+  lf = open(l2[int(x)],'wb')
+  ftp.retrbinary('RETR ' + l2[int(x)],lf.write)
   lf.close
   
 ftp.close()
 if options.verbose:
-  print "Download complete. Cloing…"
+  print "Download complete."
+
+ 
+if options.verbose:
+  print "Closing…"
+  
