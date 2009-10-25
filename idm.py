@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 #
 # Install Drupal Module (idm)
 # Author : Jonas Björk, jonas@jonasbjork.net
@@ -11,9 +11,7 @@
 import sys,re,string
 from optparse import OptionParser #For parsing command line arguments.
 
-from ftplib import FTP
-
-import os
+from ftplib import FTP	
 
 optParser = OptionParser()
 optParser.set_defaults(drupalfilter="all")
@@ -26,8 +24,6 @@ optParser.add_option("-d", "--dev", action="store_true", dest="devpackages", hel
 optParser.add_option("-v", "--verbose", action="store_true", dest="verbose", help="Verbose mode (Default on)", default=False)
 
 optParser.add_option("-q", "--quiet", action="store_false", dest="verbose", help="Turn off output", default=True)
-
-#optParser.add_option("-x", "--extract", action="store_true", dest="extract", help="Extract files after downloading", default=False)
 
 (options, args) = optParser.parse_args()
 
@@ -108,8 +104,6 @@ ftp.close()
 if options.verbose:
   print "Download complete."
 
-for x in id_array:
-  os.system("tar xvf "+l2[int(x)])
  
 if options.verbose:
   print "Closing…"
